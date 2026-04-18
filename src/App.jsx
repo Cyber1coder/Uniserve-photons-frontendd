@@ -1,28 +1,36 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Navbar from "./components/Navbar";
-import Home from "./pages/Home";
-import Services from "./pages/Services";
-import ServiceDetails from "./pages/ServiceDetails";
-import Checkout from "./pages/Checkout";
-import Profile from "./pages/Profile";
-import History from "./pages/History";
-import ChatButton from "./components/ChatButton";
-import "./App.css";
+import React from 'react';
+import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
+import LoginPage from './pages/LoginPage';
+import DashboardPage from './pages/DashboardPage';
+import ServiceSearchPage from './pages/ServiceSearchPage';
+import FloatingAIChat from './components/FloatingAIChat';
+
+const Layout = ({ children }) => {
+  const location = useLocation();
+  const hideChat = location.pathname === '/login' || location.pathname === '/';
+
+  return (
+    <>
+      {children}
+      {!hideChat && <FloatingAIChat />}
+    </>
+  );
+};
 
 function App() {
   return (
     <BrowserRouter>
-      <Navbar />
-      <ChatButton />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/services/:category" element={<Services />} />
-        <Route path="/service/:id" element={<ServiceDetails />} />
-        <Route path="/checkout" element={<Checkout />} />
-        <Route path="/profile" element={<Profile />} />
-        <Route path="/history" element={<History />} />
-        
-      </Routes>
+      <Layout>
+        <Routes>
+          <Route path="/" element={<LoginPage />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/dashboard" element={<DashboardPage />} />
+          <Route path="/search/:category" element={<ServiceSearchPage />} />
+          
+          {/* Fallback to Login for prototype */}
+          <Route path="*" element={<LoginPage />} />
+        </Routes>
+      </Layout>
     </BrowserRouter>
   );
 }
