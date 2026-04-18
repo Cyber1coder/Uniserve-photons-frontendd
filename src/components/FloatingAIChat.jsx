@@ -11,6 +11,8 @@ const FloatingAIChat = () => {
   const [isTyping, setIsTyping] = useState(false);
   const scrollRef = useRef(null);
 
+  const API_URL = import.meta.env.VITE_API_URL || "http://127.0.0.1:5000";
+
   useEffect(() => {
     if (scrollRef.current) {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
@@ -27,7 +29,7 @@ const FloatingAIChat = () => {
     setIsTyping(true);
     
     try {
-      const res = await fetch("http://127.0.0.1:5000/chat", {
+      const res = await fetch(`${API_URL}/chat`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
